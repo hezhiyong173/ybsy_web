@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>农业科技平台</title>
+    <!-- 引入思源黑体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- 引入Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- 引入动画库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #8BC34A;
+            --text-color: #333333;
+            --bg-color: #F5F5F5;
+            --card-spacing: 16px;
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: 40px;
+            display: block;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-text-main {
+            color: #000;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-text-sub {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-icon, .cart-icon {
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .call-button {
+            background: #FFB74D;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .call-button:hover {
+            background: #FFA726;
+        }
+
+        /* 首页横幅 */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-slider {
+            height: 100%;
+            position: relative;
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .hero-slide {
+            min-width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .hero-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+        }
+
+        .hero-content {
+            position: absolute;
+            left: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            max-width: 800px;
+            color: white;
+            z-index: 2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .discover-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #FFB74D;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .discover-button:hover {
+            background: #FFA726;
+        }
+
+        .hero-nav {
+            position: absolute;
+            right: 5%;
+            bottom: 5%;
+            display: flex;
+            gap: 1rem;
+            z-index: 2;
+        }
+
+        .hero-nav-button {
+            width: 50px;
+            height: 50px;
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: none;
+            outline: none;
+        }
+
+        .hero-nav-button:hover {
+            background: white;
+            color: var(--text-color);
+        }
+
+        .hero-dots {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .hero-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .hero-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+        }
+
+        /* 顶部区域 */
+        .header {
+            height: 20vh;
+            position: relative;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin-bottom: 16px;
+            object-fit: cover;
+        }
+
+        /* 主体内容区 */
+        .main-content {
+            padding: 100px 5%;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-subtitle {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .section-heading {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .card-description {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .read-more:hover {
+            background-color: var(--secondary-color);
+            transform: translateX(5px);
+        }
+
+        /* 底部区域 */
+        .footer {
+            background-color: #1B5E20;
+            color: white;
+            padding: 60px 5% 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: white;
+            transform: translateY(-5px);
+        }
+
+        .social-icon span {
+            color: white;
+            font-size: 24px;
+            transition: color 0.3s;
+        }
+
+        .social-icon:hover span {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 1024px) {
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading {
+                font-size: 2rem;
+            }
+        }
+
+        /* 聊天助手 */
+        .chat-widget {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 1000;
+        }
+
+        .chat-button {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* 聊天窗口 */
+        .chat-window {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 400px;
+            height: 600px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .chat-header {
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+        }
+
+        .chat-header-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-header-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .message {
+            max-width: 70%;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-user {
+            align-self: flex-end;
+        }
+
+        .message-assistant {
+            align-self: flex-start;
+        }
+
+        .message-bubble {
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 4px;
+        }
+
+        .message-user .message-bubble {
+            background: #E8F5E9;
+        }
+
+        .message-assistant .message-bubble {
+            background: #F5F5F5;
+        }
+
+        .message-time {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .chat-input-area {
+            height: 120px;
+            border-top: 1px solid #eee;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quick-questions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .quick-question {
+            background: #F5F5F5;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 16px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .quick-question:hover {
+            background: #E0E0E0;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 1px solid #C8E6C9;
+            border-radius: 4px;
+            padding: 8px;
+            resize: none;
+            height: 40px;
+        }
+
+        .chat-send {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chat-send:hover {
+            background: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .chat-window {
+                width: 100%;
+                height: 100%;
+                right: 0;
+                bottom: 0;
+                border-radius: 0;
+            }
+        }
+
+        /* 身份分类部分 */
+        .identity-section {
+            padding: 60px 5%;
+            background: #fff;
+        }
+
+        .identity-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto 0;
+        }
+
+        .identity-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .identity-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .identity-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-hover);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .identity-icon .material-icons {
+            font-size: 40px;
+            color: var(--primary-color);
+        }
+
+        .identity-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .identity-card p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .learn-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .learn-more:hover {
+            color: var(--secondary-color);
+            gap: 12px;
+        }
+
+        /* 农业资讯部分 */
+        .news-section {
+            padding: 60px 5%;
+            background: var(--bg-color);
+        }
+
+        .news-slider {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, auto);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding: 20px 0;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .news-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .news-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 2.8em;
+            line-height: 1.4;
+        }
+
+        .news-content p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 4.8em;
+            flex: 1;
+        }
+
+        .news-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .news-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: var(--bg-hover);
+        }
+
+        .read-more:hover {
+            background: var(--primary-color);
+            color: white;
+            gap: 12px;
+        }
+
+        .read-more .material-icons {
+            font-size: 18px;
+        }
+
+        @media (max-width: 1024px) {
+            .news-slider {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, auto);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .news-slider {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, auto);
+            }
+        }
+
+        /* 数据统计部分 */
+        .stats-section {
+            padding: 60px 5%;
+            background: white;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .stat-item p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* 用户评价部分 */
+        .testimonials-section {
+            padding: 60px 5%;
+            background: var(--bg-color);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto 0;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-details h4 {
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .user-details p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .testimonial-text {
+            color: var(--text-color);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* 注册区域 */
+        .signup-section {
+            position: relative;
+            padding: 100px 5%;
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            color: white;
+        }
+
+        .signup-overlay {
+            position: relative;
+            z-index: 1;
+        }
+
+        .signup-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .signup-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .signup-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .signup-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .signup-button:hover {
+            background: #FFA726;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 1024px) {
+            .identity-grid,
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .identity-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .news-card {
+                min-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <a href="#" class="logo-container">
+            <img src="logo/微信图片_20250216170400.jpg" alt="益百生源" class="logo-img">
+            <div class="logo-text">
+                <span class="logo-text-main">益百生源</span>
+                <span class="logo-text-sub">智慧农业科技</span>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="#" class="nav-link active">首页</a>
+            <a href="#" class="nav-link">关于我们</a>
+            <a href="#" class="nav-link">产品服务</a>
+            <a href="#" class="nav-link">技术支持</a>
+            <a href="#" class="nav-link">新闻资讯</a>
+        </div>
+        <div class="nav-right">
+            <span class="material-icons search-icon">search</span>
+            <a href="tel:13869817702" class="call-button">
+                <span class="material-icons">phone</span>
+                <span>13869817702</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- 首页横幅 -->
+    <section class="hero">
+        <div class="hero-slider">
+            <div class="hero-slide" style="background-image: url('logo/R-C.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('logo/R-C (1).jpg')"></div>
+            <div class="hero-slide" style="background-image: url('logo/微信图片_20250216172840.png')"></div>
+        </div>
+        <div class="hero-content">
+            <h3 class="hero-subtitle">智慧农业科技引领者</h3>
+            <h1 class="hero-title">
+                科技赋能农业
+                <br>
+                创新驱动发展
+            </h1>
+            <p class="hero-description">
+                益百生源致力于运用物联网、大数据、人工智能等前沿技术，
+                为现代农业发展提供全方位的智慧解决方案。
+            </p>
+            <a href="chat.html" class="discover-button">AI助手</a>
+        </div>
+        <div class="hero-nav">
+            <button class="hero-nav-button" id="prevSlide">
+                <span class="material-icons">arrow_back</span>
+            </button>
+            <button class="hero-nav-button" id="nextSlide">
+                <span class="material-icons">arrow_forward</span>
+            </button>
+        </div>
+        <div class="hero-dots"></div>
+    </section>
+
+    <!-- 主体内容区 -->
+    <main class="main-content">
+        <!-- 身份分类部分 -->
+        <section class="identity-section">
+            <h2 class="section-title">选择您的身份</h2>
+            <div class="identity-grid">
+                <div class="identity-card">
+                    <div class="identity-icon">
+                        <span class="material-icons">agriculture</span>
+                    </div>
+                    <h3>种植者</h3>
+                    <p>农民、农场主、农业从业者等从事种植活动的人员</p>
+                    <a href="#" class="learn-more">了解更多 <span class="material-icons">arrow_forward</span></a>
+                </div>
+                <div class="identity-card">
+                    <div class="identity-icon">
+                        <span class="material-icons">store</span>
+                    </div>
+                    <h3>农产品消费者</h3>
+                    <p>关注农产品质量和安全的消费者</p>
+                    <a href="#" class="learn-more">了解更多 <span class="material-icons">arrow_forward</span></a>
+                </div>
+                <div class="identity-card">
+                    <div class="identity-icon">
+                        <span class="material-icons">psychology</span>
+                    </div>
+                    <h3>农业专家</h3>
+                    <p>农业技术专家、研究人员和顾问</p>
+                    <a href="#" class="learn-more">了解更多 <span class="material-icons">arrow_forward</span></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 农业资讯部分 -->
+        <section class="news-section">
+            <h2 class="section-title">最新农业资讯</h2>
+            <div class="news-slider">
+                <div class="news-card">
+                    <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="环保农业">
+                    <div class="news-content">
+                        <h3>环保与高效农业的最新发展</h3>
+                        <p>探索最新的环保农业技术和方法，提高农业生产效率。</p>
+                        <a href="#" class="read-more">查看详情 <span class="material-icons">arrow_forward</span></a>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img src="https://images.unsplash.com/photo-1599685315640-9ceab2f58944?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="智能农业">
+                    <div class="news-content">
+                        <h3>全球农业创新技术</h3>
+                        <p>了解全球最新的农业创新技术和应用案例。</p>
+                        <a href="#" class="read-more">查看详情 <span class="material-icons">arrow_forward</span></a>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img src="https://images.unsplash.com/photo-1589923188900-85dae523342b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="农产品">
+                    <div class="news-content">
+                        <h3>提高农产品产量的策略</h3>
+                        <p>探索提高农产品产量和质量的有效策略。</p>
+                        <a href="#" class="read-more">查看详情 <span class="material-icons">arrow_forward</span></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 数据统计部分 -->
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <h3>71K+</h3>
+                    <p>注册用户</p>
+                </div>
+                <div class="stat-item">
+                    <h3>250+</h3>
+                    <p>专业解决方案</p>
+                </div>
+                <div class="stat-item">
+                    <h3>98%</h3>
+                    <p>用户满意度</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户评价部分 -->
+        <section class="testimonials-section">
+            <h2 class="section-title">用户评价</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="用户头像" class="user-avatar">
+                        <div class="user-details">
+                            <h4>张先生</h4>
+                            <p>种植户</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"平台提供的智能解决方案帮助我提高了农作物产量，非常感谢！"</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="用户头像" class="user-avatar">
+                        <div class="user-details">
+                            <h4>李女士</h4>
+                            <p>农业专家</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"作为农业专家，我很高兴能在这个平台上分享知识，帮助更多农民。"</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="用户头像" class="user-avatar">
+                        <div class="user-details">
+                            <h4>王先生</h4>
+                            <p>农场主</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"平台的技术支持团队非常专业，解决了我们很多实际问题。"</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 注册区域 -->
+        <section class="signup-section" style="background-image: url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80')">
+            <div class="signup-overlay">
+                <h2>加入农业科技革新</h2>
+                <p>立即注册，开启智慧农业新篇章</p>
+                <a href="#" class="signup-button">立即加入</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部区域 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h2 class="footer-title">联系我们</h2>
+            <div class="social-icons">
+                <a href="#" class="social-icon" title="微信">
+                    <span class="material-icons">wechat</span>
+                </a>
+                <a href="tel:13869817702" class="social-icon" title="电话">
+                    <span class="material-icons">phone</span>
+                </a>
+                <a href="#" class="social-icon" title="邮箱">
+                    <span class="material-icons">email</span>
+                </a>
+                <a href="https://www.douyin.com/user/MS4wLjABAAAAngifs4Bte4WqewVUA4jwtYBZaK9ZZKtdK-VmiojHyofjRA09pk7tfdmAM0ul15S5?from_tab_name=main" class="social-icon" title="抖音" target="_blank">
+                    <span class="material-icons">music_note</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 聊天助手 -->
+    <div class="chat-widget">
+        <div class="chat-button">
+            <span class="material-icons">chat</span>
+        </div>
+    </div>
+
+    <!-- 聊天窗口 -->
+    <div class="chat-window">
+        <div class="chat-header">
+            <span>农业小助手</span>
+            <div class="chat-header-buttons">
+                <button class="chat-header-button" id="minimizeChat">
+                    <span class="material-icons">remove</span>
+                </button>
+                <button class="chat-header-button" id="closeChat">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+        </div>
+        <div class="chat-messages">
+            <div class="message message-assistant">
+                <div class="message-bubble">
+                    您好！我是您的农业助手，随时为您解答问题
+                </div>
+                <span class="message-time">刚刚</span>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <div class="quick-questions">
+                <button class="quick-question">当前热门农业政策</button>
+                <button class="quick-question">常见作物病虫害防治</button>
+                <button class="quick-question">农业补贴申请指南</button>
+            </div>
+            <div class="chat-input-wrapper">
+                <textarea class="chat-input" placeholder="请输入您的问题..."></textarea>
+                <button class="chat-send">
+                    <span class="material-icons">send</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 在底部添加新闻服务脚本 -->
+    <script src="js/news-service.js"></script>
+
+    <script>
+        // 轮播图功能
+        const slider = document.querySelector('.hero-slider');
+        const slides = document.querySelectorAll('.hero-slide');
+        const prevButton = document.getElementById('prevSlide');
+        const nextButton = document.getElementById('nextSlide');
+        const dotsContainer = document.querySelector('.hero-dots');
+
+        let currentSlide = 0;
+        const slideCount = slides.length;
+
+        // 创建轮播点
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('hero-dot');
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.hero-dot');
+
+        function updateDots() {
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            updateDots();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slideCount;
+            goToSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+            goToSlide(currentSlide);
+        }
+
+        // 添加事件监听
+        prevButton.addEventListener('click', prevSlide);
+        nextButton.addEventListener('click', nextSlide);
+
+        // 自动轮播
+        let autoSlideInterval = setInterval(nextSlide, 5000);
+
+        // 鼠标悬停时暂停自动轮播
+        slider.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+
+        slider.addEventListener('mouseleave', () => {
+            autoSlideInterval = setInterval(nextSlide, 5000);
+        });
+
+        // 触摸滑动支持
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        slider.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        slider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].clientX;
+            if (touchStartX - touchEndX > 50) {
+                nextSlide();
+            } else if (touchEndX - touchStartX > 50) {
+                prevSlide();
+            }
+        });
+
+        // 聊天窗口功能
+        const chatButton = document.querySelector('.chat-button');
+        const chatWindow = document.querySelector('.chat-window');
+        const minimizeChat = document.getElementById('minimizeChat');
+        const closeChat = document.getElementById('closeChat');
+        const chatInput = document.querySelector('.chat-input');
+        const chatSend = document.querySelector('.chat-send');
+        const chatMessages = document.querySelector('.chat-messages');
+        const quickQuestions = document.querySelectorAll('.quick-question');
+
+        // 切换聊天窗口显示状态
+        function toggleChat() {
+            const isVisible = chatWindow.style.display === 'flex';
+            chatWindow.style.display = isVisible ? 'none' : 'flex';
+            chatButton.style.display = isVisible ? 'flex' : 'none';
+        }
+
+        // 添加新消息
+        function addMessage(text, isUser = false) {
+            const message = document.createElement('div');
+            message.className = `message message-${isUser ? 'user' : 'assistant'}`;
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = text;
+            
+            const time = document.createElement('span');
+            time.className = 'message-time';
+            time.textContent = '刚刚';
+            
+            message.appendChild(bubble);
+            message.appendChild(time);
+            
+            chatMessages.appendChild(message);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // 事件监听
+        chatButton.addEventListener('click', toggleChat);
+        minimizeChat.addEventListener('click', toggleChat);
+        closeChat.addEventListener('click', toggleChat);
+
+        chatSend.addEventListener('click', () => {
+            const text = chatInput.value.trim();
+            if (text) {
+                addMessage(text, true);
+                chatInput.value = '';
+                // 这里可以添加发送消息到后端的逻辑
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                chatSend.click();
+            }
+        });
+
+        quickQuestions.forEach(button => {
+            button.addEventListener('click', () => {
+                addMessage(button.textContent, true);
+                // 这里可以添加发送消息到后端的逻辑
+            });
+        });
+
+        // 添加卡片动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html> 
