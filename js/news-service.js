@@ -6,14 +6,14 @@ class NewsService {
         this.baseUrl = 'http://api.tianapi.com/nongye/index';
         this.newsCache = [];
         this.lastUpdateTime = null;
-        // 更新默认农业相关图片数组，添加吊兰花和甘蔗种植图片
+        // 更新默认农业相关图片数组，使用小番茄种植相关图片
         this.defaultImages = [
-            'https://images.unsplash.com/photo-1574943320219-553eb213f72d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1589923188900-85dae523342b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1599685315640-9ceab2f58944?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
-            'logo/吊兰花.jpg',  // 添加吊兰花图片
-            'logo/甘蔗种植.jpg'  // 添加甘蔗种植图片
+            'logo/tomato1.jpg',  // 枝头成熟的小番茄特写
+            'logo/tomato2.jpg',  // 温室大棚中的番茄
+            'logo/tomato3.jpg',  // 盆栽小番茄丰收图
+            'logo/tomato4.jpg',  // 室内盆栽小番茄
+            'logo/tomato5.jpg',  // 阳台种植的小番茄
+            'logo/tomato6.jpg'   // 多盆小番茄种植
         ];
     }
 
@@ -51,66 +51,58 @@ class NewsService {
         }
     }
 
-    // 添加默认新闻数据方法
+    // 直接使用默认新闻数据
+    async getNews() {
+        return this.getDefaultNews();
+    }
+
     getDefaultNews() {
-        const defaultNews = [
+        return [
             {
-                title: '吊兰：姿态优美的"空气卫士"',
-                description: '吊兰不仅美观，还能净化空气，是理想的室内植物。其白色小花姿态优美，绿叶垂挂，是净化空气的天然卫士。',
-                url: '#',
-                image: this.defaultImages[4],  // 使用吊兰花图片
-                pubDate: new Date().toISOString()
-            },
-            {
-                title: '因何得名？揭秘唐宣满的"姓氏来源"',
-                description: '探索古老农业家族的历史渊源和发展历程。',
-                image: this.defaultImages[1],
-                url: '#',
-                pubDate: new Date().toISOString()
-            },
-            {
-                title: '【思政开放麦·时事热点微评】驻村第一书记的强农报国新春"答卷"',
-                description: '基层干部在农村振兴中的重要作用和突出贡献。通过实地走访、技术指导等方式，助力农民增收致富。',
-                image: this.defaultImages[5],  // 使用甘蔗种植图片
-                url: '#',
-                pubDate: new Date().toISOString()
-            },
-            {
-                title: '智慧农业发展新趋势',
-                description: '探讨现代农业科技创新和数字化转型的最新进展。',
-                image: this.defaultImages[3],
-                url: '#',
-                pubDate: new Date().toISOString()
-            },
-            {
-                title: '有机种植技术创新',
-                description: '最新的有机农业种植方法和可持续发展实践。',
-                image: this.defaultImages[2],
-                url: '#',
-                pubDate: new Date().toISOString()
-            },
-            {
-                title: '农业政策解读与展望',
-                description: '深入分析最新农业政策对行业发展的影响。',
+                title: '小番茄种植基础技术指南',
+                description: '详细介绍小番茄的种植要求、管理技巧，包括土壤选择、温度控制、水分管理等关键技术要点。',
+                url: 'https://baijiahao.baidu.com/s?id=1798049863904444226',
                 image: this.defaultImages[0],
-                url: '#',
+                pubDate: new Date().toISOString()
+            },
+            {
+                title: '小番茄种植时间及栽培技术',
+                description: '全面解析小番茄的最佳种植时间、种子选购要点，以及详细的栽培管理方法。',
+                url: 'https://flowerwish.cn/post/6339.html',
+                image: this.defaultImages[4],
+                pubDate: new Date().toISOString()
+            },
+            {
+                title: '7步轻松种植小番茄',
+                description: '图文详解小番茄种植的7个关键步骤，包括摘芯、摘腋芽、搭支架等实用技巧。',
+                url: 'https://baijiahao.baidu.com/s?id=1660454859477091374',
+                image: this.defaultImages[5],
+                pubDate: new Date().toISOString()
+            },
+            {
+                title: '小番茄高效种植技术',
+                description: '专业解读小番茄的高效种植方法，提高产量和品质的实用技术要点。',
+                url: 'https://www.cnhnb.com/xt/article-44173.html',
+                image: this.defaultImages[1],
+                pubDate: new Date().toISOString()
+            },
+            {
+                title: '小西红柿种植管理技术',
+                description: '系统介绍小西红柿的种植方法和管理技术，从育苗到采收的全程指导。',
+                url: 'https://www.cnhnb.com/xt/article-118540.html',
+                image: this.defaultImages[2],
+                pubDate: new Date().toISOString()
+            },
+            {
+                title: '番茄盆栽完美种植攻略',
+                description: '最详细的番茄盆栽种植指南，让你在家轻松种出完美番茄。',
+                url: 'https://www.thepaper.cn/newsDetail_forward_23971208',
+                image: this.defaultImages[3],
                 pubDate: new Date().toISOString()
             }
         ];
-        return defaultNews;
     }
 
-    async getNews() {
-        const now = new Date();
-        // 如果缓存为空或者最后更新时间超过1小时，重新获取数据
-        if (!this.newsCache.length || !this.lastUpdateTime || 
-            (now - this.lastUpdateTime) > 3600000) {
-            return await this.fetchNews();
-        }
-        return this.newsCache;
-    }
-
-    // 格式化日期
     formatDate(dateStr) {
         const date = new Date(dateStr);
         return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -126,8 +118,7 @@ async function updateNewsDisplay() {
     if (!newsSlider) return;
 
     const news = await newsService.getNews();
-    if (!news) return;
-
+    
     // 清空现有内容
     newsSlider.innerHTML = '';
 
@@ -142,7 +133,7 @@ async function updateNewsDisplay() {
                 <p>${item.description}</p>
                 <div class="news-footer">
                     <span class="news-date">${newsService.formatDate(item.pubDate)}</span>
-                    <a href="${item.url}" target="_blank" class="read-more">
+                    <a href="${item.url}" class="read-more">
                         查看详情 <span class="material-icons">arrow_forward</span>
                     </a>
                 </div>
@@ -152,8 +143,5 @@ async function updateNewsDisplay() {
     });
 }
 
-// 定时更新新闻（每小时更新一次）
-setInterval(updateNewsDisplay, 3600000);
-
-// 页面加载时立即更新一次
+// 页面加载时更新新闻
 document.addEventListener('DOMContentLoaded', updateNewsDisplay); 
